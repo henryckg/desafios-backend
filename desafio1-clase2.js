@@ -29,7 +29,7 @@ class ProductManager {
                 }
                 this.products.push(product)
             } else {
-                console.log(`ERROR: The code ${code} already exists`)
+                console.log(`ERROR: The code "${code}" already exists`)
             }
         }
     }
@@ -47,3 +47,14 @@ class ProductManager {
         }
     }
 }
+
+const productManager = new ProductManager()
+
+productManager.getProducts()
+
+productManager.addProduct("producto prueba", "Este es un producto prueba", 200, "sin imagen", "abc123", 25)
+productManager.getProducts()
+
+productManager.addProduct("producto prueba", "Este es un producto prueba", 200, "sin imagen", "abc123", 25)
+
+productManager.getProductById(2)
