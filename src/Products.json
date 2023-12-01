@@ -1,0 +1,92 @@
+[
+    {
+        "id": 1,
+        "title": "Focusrite Scarlett 4i4",
+        "description": "USB Audio Interface. 4th Gen",
+        "price": 279,
+        "thumbnail": "/focusrite-4i4.jpg",
+        "code": "scarlettt-4i4-4g",
+        "stock": 3
+    },
+    {
+        "id": 2,
+        "title": "Rode NT1 Signature Series",
+        "description": "Condenser Microphone",
+        "price": 159,
+        "thumbnail": "/rode-nt1-signature-series.jpg",
+        "code": "nt1sig",
+        "stock": 7
+    },
+    {
+        "id": 3,
+        "title": "Zoom R4 MultiTrak",
+        "description": "4-track digital recorder and USB audio interface",
+        "price": 199,
+        "thumbnail": "/zoom-r4-multitrack.jpg",
+        "code": "zr4multi",
+        "stock": 3
+    },
+    {
+        "id": 4,
+        "title": "KRK Classic 5 Monitor Pack",
+        "description": "50W Powered Studio Monitor",
+        "price": 299,
+        "thumbnail": "/krk-classic-5.jpg",
+        "code": "cl5g3pk1-n",
+        "stock": 2
+    },
+    {
+        "id": 5,
+        "title": "Sennheiser E609",
+        "description": "Dynamic supercardioid guitar amplifier microphone. Color silver",
+        "price": 99,
+        "thumbnail": "/sennheiser-e609.jpg",
+        "code": "500074",
+        "stock": 8
+    },
+    {
+        "id": 6,
+        "title": "Electro-Voice RE20",
+        "description": "Dynamic cardioid broadcast microphone with variable-D",
+        "price": 449,
+        "thumbnail": "/electro-voice-re20.jpg",
+        "code": "ev-re20",
+        "stock": 4
+    },
+    {
+        "id": 7,
+        "title": "AKG K271 MKII",
+        "description": "Dynamic closed-back studio and live headphones",
+        "price": 279,
+        "thumbnail": "/akg-k271-mkii.jpg",
+        "code": "2470x00190",
+        "stock": 5
+    },
+    {
+        "id": 8,
+        "title": "Behringer U-Phoria UMC1820",
+        "description": "USB 2.0 audio interface, 18-in/20-.",
+        "price": 299,
+        "thumbnail": "/behringer-umc1820.jpg",
+        "code": "000-B2J02-00010",
+        "stock": 1
+    },
+    {
+        "id": 9,
+        "title": "PreSonus Studio 1824c",
+        "description": "USB-C Audio interface, 18-in/18-out.",
+        "price": 499,
+        "thumbnail": "/presonus-studio-1824c.jpg",
+        "code": "2777700402",
+        "stock": 3
+    },
+    {
+        "id": 10,
+        "title": "Tascam Model 12",
+        "description": "12-channel Multitrack Recorder/10-channel Digital Mixer with 12-in/10-out USB Audio Interface and Built-in Effects",
+        "price": 590,
+        "thumbnail": "/tascam-model-12.jpg",
+        "code": "model-12",
+        "stock": 2
+    }
+]

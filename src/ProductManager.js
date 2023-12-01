@@ -1,4 +1,4 @@
-const fs = require("fs")
+import fs from 'fs'
 
 class ProductManager {
     constructor(path) {
@@ -49,9 +49,9 @@ class ProductManager {
         const products = await this.getProducts();
         const product = products.find(prod => prod.id === productId)
         if (product) {
-            console.log(product)
+            return product
         } else {
-            console.log("Product Not Found")
+            throw new Error ('Product Not Found')
         }
     }
 
@@ -68,6 +68,7 @@ class ProductManager {
                         ...newValues,
                     }
                 }
+                return prod
             })
             await fs.promises.writeFile(this.path, JSON.stringify(updatedProducts), 'utf-8')
         } else {
@@ -88,70 +89,4 @@ class ProductManager {
     }
 }
 
-const test = async () => {
-    const productManager = new ProductManager('./desafio2-clase4/Products.json')
-    let data = await productManager.getProducts()
-    
-    const product1 = {
-        title: "producto prueba",
-        description: "Esto es un producto prueba",
-        price: 200,
-        thumbnail: "Sin imagen",
-        code: "abc123",
-        stock: 25   
-    }
-
-    // await productManager.addProduct(product1)
-
-    // await productManager.getProductById(1)
-    // await productManager.getProductById(2)
-
-    const updatedProduct1 = {
-        description: "Esto es un producto prueba actualizado",
-        price: 450,
-    }
-
-    // await productManager.updateProduct(1, updatedProduct1)
-
-    // await productManager.deleteProduct(2)
-    // await productManager.deleteProduct(1)
-
-    const product2 = {
-        title: "producto prueba 2",
-        description: "Esto es un producto prueba 2",
-        price: 150,
-        thumbnail: "Sin imagen",
-        code: "abc1234",
-        stock: 20   
-    }
-
-    const product3 = {
-        title: "producto prueba 3",
-        description: "Esto es un producto prueba 3",
-        price: 50,
-        thumbnail: "Sin imagen",
-        code: "abc12345",
-        stock: 15   
-    }
-
-    // await productManager.addProduct(product2)
-    // await productManager.addProduct(product3)
-
-    // await productManager.deleteProduct(1)
-
-    const product4 = {
-        title: "producto prueba 4",
-        description: "Esto es un producto prueba 4",
-        price: 50,
-        thumbnail: "Sin imagen",
-        code: "abc123456",
-        stock: 15   
-    }
-
-    await productManager.addProduct(product4)
-
-    data = await productManager.getProducts()
-    console.log(data)
-}
-
-test()
+export default ProductManager;
