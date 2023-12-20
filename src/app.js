@@ -1,37 +1,34 @@
 import express from 'express';
-import ProductManager from './ProductManager.js'
+import handlebars from 'express-handlebars'
+import { Server } from 'socket.io'
+import productsRouter from './routes/products.routes.js';
+import cartRouter from './routes/cart.routes.js';
+import viewRouter from './routes/views.routes.js';
+import axios from 'axios';
 
-const app = express();
 const PORT = 8080;
+const app = express();
+
+app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+app.use(express.static('public'));
 
-const productManager = new ProductManager("./src/Products.json")
+app.engine('handlebars', handlebars.engine());
+app.set('views', 'src/views');
+app.set('view engine', 'handlebars')
 
-app.get('/', (req, res) => {
-    res.send('<h1>Product Manager</h1>')
+app.use('/', viewRouter)
+app.use('/api/products', productsRouter)
+app.use('/api/carts', cartRouter)
+
+const httpServer = app.listen(PORT, () => {
+    console.log(`Server running on ${PORT}`)
 })
 
-app.get('/products', async (req, res) => {
-    const products = await productManager.getProducts()
-    const { limit } = req.query;
-    if(!limit){
-        return res.send(products)
-    } 
-    const productsLimited = products.slice(0, +limit)
-    res.send(productsLimited)
-})
+const io = new Server(httpServer)
 
-app.get('/products/:pId', async (req, res) => {
-    const {pId} = req.params
-
-    try {
-        const product = await productManager.getProductById(+pId)
-        res.send(product)
-    } catch (error) {
-        res.send({error: error.message})
-    }
-})
-
-app.listen(PORT, () => {
-    console.log(`Servidor funcionando desde el puerto ${PORT}`)
+io.on('connect', async (socket) => {
+    console.log("cliente conectado")
+    const {data : products} = await axios.get('http://localhost:8080/api/products')
+    io.emit('getProducts', products)
 })

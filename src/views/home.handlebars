@@ -1,0 +1,15 @@
+<div>
+    <h1>Wara Sound</h1>
+</div>
+<div>
+    {{#each products}}
+        {{#if this.available}}
+        <h2>{{this.title}}</h2>
+        <p>{{this.description}}</p>
+        <p>Price: ${{this.price}}</p>
+        <p>Stock: {{this.stock}}</p>
+        <p>Category: {{this.category}}</p>
+        <br />
+        {{/if}}
+    {{/each}}
+</div>

@@ -6,10 +6,10 @@ class ProductManager {
     }
 
     async addProduct(product) {
-        const {title, description, price, thumbnail, code, stock} = product
+        const {title, description, price, thumbnail, code, available, stock, category} = product
 
-        if (!title || !description || !price || !thumbnail || !code || !stock) {
-            return console.log("Para agregar un producto nuevo, todos los campos son OBLIGATORIOS")
+        if (!title || !description || !price || !code || !available || !stock || !category) {
+            throw new Error("all fields are required")
         }
         
         const products = await this.getProducts();
@@ -22,16 +22,18 @@ class ProductManager {
                 title,
                 description,
                 price,
-                thumbnail,
+                thumbnail,  
                 code,
+                available: true,
                 stock,
+                category
             }
             
             products.push(newProduct)
             await fs.promises.writeFile(this.path, JSON.stringify(products), 'utf-8')
             
         } else {
-            console.log(`The code "${code}" already exists`)
+            throw new Error(`code ${code} already exists`)
         }
     }
 
@@ -47,44 +49,43 @@ class ProductManager {
 
     async getProductById(productId) {
         const products = await this.getProducts();
-        const product = products.find(prod => prod.id === productId)
+        const product = products.find(prod => prod.id === +productId)
         if (product) {
             return product
         } else {
-            throw new Error ('Product Not Found')
+            throw new Error ('product not found')
         }
     }
 
     async updateProduct(id, newValues) {
-        const products = await this.getProducts()
-        const productId = products.some(prod => prod.id === id)
+        const products = await this.getProducts() 
 
-        if(productId){
+        if(products.some(prod => prod.id === +id)){
             const updatedProducts = products.map(prod => {
-                if(prod.id === id){
+                if(prod.id === +id){
                     return {
-                        id,
                         ...prod,
                         ...newValues,
+                        id: +id
                     }
                 }
                 return prod
             })
             await fs.promises.writeFile(this.path, JSON.stringify(updatedProducts), 'utf-8')
         } else {
-            console.log(`ID ${id} not found`)
+            throw new Error (`id ${id} not found`)
         }
     }
 
     async deleteProduct(id) {
         const products = await this.getProducts()
-        const productId = products.some(prod => prod.id === id)
+        const productId = products.some(prod => prod.id === +id)
 
         if(productId){
-            const newProductsList = products.filter(prod => prod.id !== id)
+            const newProductsList = products.filter(prod => prod.id !== +id)
             await fs.promises.writeFile(this.path, JSON.stringify(newProductsList), 'utf-8')
         } else {
-            console.log(`ID ${id} does not exist`)
+            throw new Error (`id ${id} does not exist`)
         }   
     }
 }
