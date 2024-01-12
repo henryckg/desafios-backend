@@ -8,7 +8,7 @@ class ProductManager {
     async addProduct(product) {
         const {title, description, price, thumbnail, code, available, stock, category} = product
 
-        if (!title || !description || !price || !code || !available || !stock || !category) {
+        if (!title || !description || !price || !code || !stock || !category) {
             throw new Error("all fields are required")
         }
         
@@ -21,10 +21,10 @@ class ProductManager {
                 id: lastId + 1,
                 title,
                 description,
+                thumbnail,
                 price,
-                thumbnail,  
                 code,
-                available: true,
+                available,
                 stock,
                 category
             }

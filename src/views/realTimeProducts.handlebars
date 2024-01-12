@@ -1,6 +1,41 @@
 <h1>Real-Time Products</h1>
 
-<div id="productCard">
+<div>
+    <form id="addProductForm">
+        <input type="text" name="title" id="productTitle" placeholder="Producto" required>
+        <br />
+        <input type="text" name="description" id="productDescription" placeholder="Descripción" required>
+        <br /> 
+        <input type="number" name="price" id="productPrice" placeholder="Precio" required>
+        <br />
+        <input type="number" name="stock" id="productStock" placeholder="Stock" required>
+        <br />
+        <input type="text" name="category" id="productCategory" placeholder="Categoría" required>
+        <br />
+        <input type="text" name="code" id="productCode" placeholder="Código" required>
+        <br />
+        <label for="available">Available:</label>
+            <input type="radio" name="available" class="available" value="true" required>
+            <label for="available">Yes</label>
+            <input type="radio" name="available" class="available" value="false" required>
+            <label for="available">No</label>
+        <br />
+        <br />
+        {{!-- <input type="file" name="files" id="file" multiple> --}}
+        <button type="submit">Agregar Producto</button>
+    </form>
+</div>
+<br />
+<div>
+    <form id="deleteProductForm">
+        <label for="id">Selecciona el id del producto a eliminar:</label>
+        <input type="text" name="_id" id="selectId">
+        <br />
+        <button type="submit">Eliminar Producto</button>
+    </form>
+</div>
+
+<div id="productsContainer">
 </div>
 
 <script src="/socket.io/socket.io.js"></script>

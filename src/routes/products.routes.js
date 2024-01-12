@@ -1,63 +1,84 @@
 import { Router } from 'express';
-import ProductManager from '../ProductManager.js'
-
+import { uploader } from '../utils/multer.js';
+import { productModel } from '../dao/models/products.model.js';
 
 const productsRouter = Router();
 
-const productManager = new ProductManager('./src/Products.json')
-
 productsRouter.get('/', async (req, res) => {
-    const products = await productManager.getProducts()
     const { limit } = req.query;
-    if(!limit){
-        return res.send(products)
-    } 
-    const limitedProducts = products.slice(0, +limit)
-    res.send(limitedProducts)
+    let products = []
+    if(limit){
+        products = await productModel.find().limit(limit)
+    } else {
+        products = await productModel.find()
+    }
+    res.send(products)
 })
 
-productsRouter.get('/:pid', async (req, res) => {
-    const {pid} = req.params
+productsRouter.get('/:pId', async (req, res) => {
+    const {pId} = req.params
 
     try {
-        const product = await productManager.getProductById(+pid)
+        const product = await productModel.findOne({_id: pId})
         res.send(product)
     } catch (error) {
-        res.status(404).send({message: error.message})
+        console.error(error)
+        res.status(404).send({error})
     }
 })
 
-productsRouter.post('/', async (req, res) => {
-    const product = req.body;
+productsRouter.post('/', uploader.array('files'), async (req, res) => {
+    const newProduct = req.body;
+
+    ///// Multer será integrado más tarde /////
+    // const files = req.files
+    // let paths = []
     
+    // files.forEach((file) => {
+    //     paths.push(file.path.split('public').join(''))
+    // })
+
     try {
-        await productManager.addProduct(product)
-        res.send({message: 'product added'})
+        await productModel.create(newProduct)
+        res.status(201).json({message: 'product added'})
     } catch (error) {
-        res.status(400).send({message: error.message})
+        console.error({error})
+        if(error.errors){
+            return res.status(400).json({message: error.message})
+        }
+        res.status(400).json({error})
     }
 })
 
-productsRouter.put('/:pid', async (req, res) => {
-    const {pid} = req.params
+productsRouter.put('/:pId', async (req, res) => {
+    const {pId} = req.params
+    const newValues = req.body
 
     try {
-        const newValues = req.body
-        await productManager.updateProduct(+pid, newValues)
-        res.send({message: 'product has been updated'})
+        const update = await productModel.updateOne({_id: pId}, newValues)
+        console.log(update)
+        if(update.matchedCount > 0){
+            return res.send({message: 'product updated'})
+        }
+        res.status(404).json({message:'product not found'})
     } catch (error) {
-        res.status(404).send({message: error.message})
+        console.error(error)
+        res.status(400).send({error})
     }
 })
 
-productsRouter.delete('/:pid', async (req, res) => {
-    const {pid} = req.params
+productsRouter.delete('/:pId', async (req, res) => {
+    const {pId} = req.params
 
     try {
-        await productManager.deleteProduct(+pid)
-        res.send({message: 'product deleted'})
+        const productDeleted = await productModel.deleteOne({_id:pId})
+        if(productDeleted.deletedCount > 0){
+            return res.send({message: 'product deleted'})
+        }
+        res.status(404).json({message: 'product not found'})
     } catch (error) {
-        res.status(404).send({message: error.message})
+        console.error(error)
+        res.status(400).send({error})
     }
 })
 
