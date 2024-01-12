@@ -33,7 +33,8 @@ const productSchema = mongoose.Schema({
     },
     category: {
         type: String,
-        required: true
+        required: true,
+        enum: ['Recording', 'Microphones', 'Monitors', 'Headphones']
     }
 })
 
