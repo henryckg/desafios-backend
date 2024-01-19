@@ -1,0 +1,29 @@
+<h1>Products</h1>
+<div>
+    {{#each docs}}
+        <div>
+            {{#if this.available}}
+            <h2>{{this.title}}</h2>
+            <span>SKU: {{this.code}}</span>
+            <h4>{{this.description}}</h4>
+            <p>Price: ${{this.price}}</p>
+            <p>Stock: {{this.stock}}</p>
+            <p>Category: {{this.category}}</p>
+            <button id="{{this._id}}" class="addToCartBtn">Agregar al Carrito</button>
+            <br />
+            <br />
+            {{/if}}
+        </div>
+    {{/each}}
+
+    <br />
+    <br />
+    {{#if hasPrevPage}}
+    <button><a href="/products?page={{prevPage}}">Página Anterior</a></button>
+    {{/if}}
+    {{#if hasNextPage}}
+    <button><a href="/products?page={{nextPage}}">Página Siguiente</a></button>
+    {{/if}}
+</div>
+
+<script src="/js/products.js"></script>

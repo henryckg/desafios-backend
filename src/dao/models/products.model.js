@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import mongoosePaginate from 'mongoose-paginate-v2'
 
 const productCollection = 'products'
 
@@ -37,5 +38,7 @@ const productSchema = mongoose.Schema({
         enum: ['Recording', 'Microphones', 'Monitors', 'Headphones']
     }
 })
+
+productSchema.plugin(mongoosePaginate)
 
 export const productModel = mongoose.model(productCollection, productSchema)

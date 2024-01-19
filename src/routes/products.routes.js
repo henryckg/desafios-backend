@@ -5,14 +5,22 @@ import { productModel } from '../dao/models/products.model.js';
 const productsRouter = Router();
 
 productsRouter.get('/', async (req, res) => {
-    const { limit } = req.query;
-    let products = []
-    if(limit){
-        products = await productModel.find().limit(limit)
-    } else {
-        products = await productModel.find()
+    const { limit = 10, sort = '', page = 1, query = '' } = req.query;
+    const [code, value] = query.split(':')
+    
+    let products = await productModel.paginate({[code] : value}, {
+        limit,
+        page,
+        sort : sort ? {price : sort} : {}
+    })
+    products.payload = products.docs
+    delete products.docs
+
+    if(!products){
+        return res.status(400).send({status: 'error'})
     }
-    res.send(products)
+
+    res.send({status: 'success', ...products})
 })
 
 productsRouter.get('/:pId', async (req, res) => {

@@ -15,7 +15,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
-app.engine('handlebars', handlebars.engine());
+const hdb = handlebars.create({
+    runtimeOptions:{
+        allowProtoPropertiesByDefault: true
+    }
+})
+app.engine('handlebars', hdb.engine);
 app.set('views', 'src/views');
 app.set('view engine', 'handlebars')
 
