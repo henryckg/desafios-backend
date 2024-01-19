@@ -5,19 +5,24 @@ import mongoose from 'mongoose';
 
 const cartsRouter = Router ();
 
+//Ruta para crear un carrito
 cartsRouter.post('/', async (req, res) => {
     const cartAdded = await cartModel.create({})
     if(!cartAdded){
-        return res.status(400).send({message: 'cart can not be created'})
+        return res.status(400).send({message: 'Could not create cart'})
     }
-    res.send({message: 'cart created'})
+    res.status(201).send({message: 'Cart created'})
 })
 
+//Ruta para obtener un carrito por ID
 cartsRouter.get('/:cid', async (req, res) => {
     const { cid } = req.params;
 
     try {
         const cart = await cartModel.findOne({_id: cid}).populate('products.product')
+        if(!cart){
+            return res.status(404).json({message: 'Cart not found'})
+        }
         res.send(cart)
     } catch (error) {
         console.error(error)
@@ -25,6 +30,7 @@ cartsRouter.get('/:cid', async (req, res) => {
     }
 })
 
+//Ruta para agregar un producto a un carrito
 cartsRouter.post('/:cid/product/:pid', async (req, res) => {
     const {cid, pid} = req.params;
 
@@ -32,8 +38,11 @@ cartsRouter.post('/:cid/product/:pid', async (req, res) => {
         const cart = await cartModel.findOne({_id: cid})
         const product = await productModel.findOne({_id: pid})
 
-        if(!cart || !product){
-            return res.status(400).json({message: 'Product can not be added to cart'})
+        if(!cart){
+            return res.status(404).json({message: 'Cart not found'})
+        }
+        if(!product){
+            return res.status(404).json({message: 'Product not found'})
         }
 
         const productInCart = cart.products.find(prod => prod.product.toString() === pid)
@@ -44,7 +53,7 @@ cartsRouter.post('/:cid/product/:pid', async (req, res) => {
         }
 
         await cart.save()
-        res.send({message: 'product added to cart'})
+        res.send({message: 'Product added to cart'})
 
     } catch (error) {
         console.error(error)
@@ -52,6 +61,7 @@ cartsRouter.post('/:cid/product/:pid', async (req, res) => {
     }
 })
 
+//Ruta para eliminar un producto de un carrito
 cartsRouter.delete('/:cid/products/:pid', async (req, res) => {
     const { cid, pid } = req.params;
 
@@ -70,6 +80,7 @@ cartsRouter.delete('/:cid/products/:pid', async (req, res) => {
     }
 })
 
+//Ruta para actualizar un carrito
 cartsRouter.put('/:cid', async (req, res) => {
     const { cid } = req.params;
     const updatedCart = req.body;
@@ -86,6 +97,7 @@ cartsRouter.put('/:cid', async (req, res) => {
     }
 })
 
+//Ruta para actualizar la cantidad de un producto en específico dentro de un carrito
 cartsRouter.put('/:cid/products/:pid', async (req, res) => {
     const { cid, pid } = req.params;
     const newQty = req.body.quantity
@@ -113,6 +125,7 @@ cartsRouter.put('/:cid/products/:pid', async (req, res) => {
     }
 })
 
+//Ruta para eliminar el contenido de un carrito
 cartsRouter.delete('/:cid', async(req, res) => {
     const { cid } = req.params;
 
