@@ -1,40 +1,57 @@
 import { Router } from "express";
 import { productModel } from "../dao/models/products.model.js";
 import { cartModel } from "../dao/models/carts.model.js";
+import { checkAuth, checkExistingUser } from "../middlewares/auth.js";
 
 const viewRouter = Router()
 
-viewRouter.get('/', async (req, res) => {
+viewRouter.get('/', checkAuth, async (req, res) => {
+    const {user} = req.session
     try {
         const products = await productModel.find().lean()
-        res.render('home', {products, title: 'WaraSound'})
+        res.render('home', {user, products, title: 'WaraSound'})
     } catch (error) {
         res.render('error', {error: 400, message: "400 Bad Request"})
     }
 })
 
-viewRouter.get('/realtimeproducts', (req, res) => {
+viewRouter.get('/realtimeproducts', checkAuth, (req, res) => {
     res.render('realTimeProducts', {title: 'WaraSound | Real-Time Products'})
+})  
+
+viewRouter.get('/chat', checkAuth, (req, res) =>     {
+    res.render('chat', {title: 'WaraSound | Chat'})
 })
 
-viewRouter.get('/chat', (req, res) => {
-    res.render('chat')
+viewRouter.get('/products', checkAuth, async (req, res) => {
+
+    const {user} = req.session
+    const {page = 1, limit = 10, sort = '', query = ''} = req.query
+    const [code, value] = query.split(':')
+    const data = await productModel.paginate({[code]:value}, {
+        limit,
+        page,
+        sort: sort ? {price : sort} : {}
+    })
+    
+    if(page <= data.totalPages && page > 0){
+        data.validPage = true
+    }
+    res.render('products', {data, title: 'WaraSound | Products', user})
 })
 
-viewRouter.get('/products', async (req, res) => {
-    const {page = 1, limit = 10} = req.query
-    const data = await productModel.paginate({}, {limit, page})
-    res.render('products', data)
-})
-
-viewRouter.get('/carts/:cid', async (req, res) => {
+viewRouter.get('/carts/:cid', checkAuth, async (req, res) => {
     const {cid} = req.params
     const cart = await cartModel.findOne({_id: cid}).populate('products.product')
-    res.render('cart', cart)
+    res.render('cart', {cart, title: 'WaraSound | Cart'})
 })
 
-// viewRouter.get(path, (req, res) => {
-//     res.render('error', {error: 404, message: "404 Not Found"})
-// })
+viewRouter.get('/login', checkExistingUser, (req, res) => {
+    res.render('login')
+})
+
+viewRouter.get('/register', checkExistingUser, (req, res) => {
+    res.render('register')
+})
 
 export default viewRouter

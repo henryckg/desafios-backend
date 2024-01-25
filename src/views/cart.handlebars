@@ -1,6 +1,6 @@
-<h1>Cart #{{_id}}</h1>
+<h1>Cart #{{cart._id}}</h1>
 
-{{#each products}}
+{{#each cart.products}}
 <div>
     <h3>{{this.product.title}}</h3>
     <span>Qty:</span>{{this.quantity}}</span>

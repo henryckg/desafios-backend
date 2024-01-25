@@ -1,29 +1,41 @@
+{{#unless data.validPage}}
+<h2>Error 404: Page Not Found</h2>
+<button><a href="/products">Go to Products</a></button>
+{{/unless}}
+
+{{#if data.validPage}}
+<p>Welcome back, {{user.first_name}} {{user.last_name}}!</p>
+<p>Email: {{user.email}}</p>
+<span>Role: {{user.role}}</span>
+<br /><br />
+<button type="button" id="logOutBtn">Log Out</button>
 <h1>Products</h1>
 <div>
-    {{#each docs}}
-        <div>
-            {{#if this.available}}
-            <h2>{{this.title}}</h2>
-            <span>SKU: {{this.code}}</span>
-            <h4>{{this.description}}</h4>
-            <p>Price: ${{this.price}}</p>
-            <p>Stock: {{this.stock}}</p>
-            <p>Category: {{this.category}}</p>
-            <button id="{{this._id}}" class="addToCartBtn">Agregar al Carrito</button>
-            <br />
-            <br />
-            {{/if}}
-        </div>
+    {{#each data.docs}}
+    <div>
+        {{#if this.available}}
+        <h2>{{this.title}}</h2>
+        <span>SKU: {{this.code}}</span>
+        <h4>{{this.description}}</h4>
+        <p>Price: ${{this.price}}</p>
+        <p>Stock: {{this.stock}}</p>
+        <p>Category: {{this.category}}</p>
+        <button id="{{this._id}}" class="addToCartBtn">Add To Cart</button>
+        <br />
+        <br />
+        {{/if}}
+    </div>
     {{/each}}
 
     <br />
     <br />
-    {{#if hasPrevPage}}
-    <button><a href="/products?page={{prevPage}}">Página Anterior</a></button>
+    {{#if data.hasPrevPage}}
+    <button><a href="/products?page={{data.prevPage}}">Previous Page</a></button>
     {{/if}}
-    {{#if hasNextPage}}
-    <button><a href="/products?page={{nextPage}}">Página Siguiente</a></button>
+    {{#if data.hasNextPage}}
+    <button><a href="/products?page={{data.nextPage}}">Next Page</a></button>
     {{/if}}
 </div>
+{{/if}}
 
 <script src="/js/products.js"></script>

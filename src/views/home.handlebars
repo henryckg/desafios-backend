@@ -2,14 +2,23 @@
     <h1>Wara Sound</h1>
 </div>
 <div>
+    <p>Welcome back, {{user.first_name}} {{user.last_name}}!</p>
+    <p>Email: {{user.email}}</p>
+    <span>Role: {{user.role}}</span>
+    <br /><br />
+    <button type="button" id="logOutBtn">Log Out</button>
+</div>
+<div>
     {{#each products}}
-        {{#if this.available}}
-        <h2>{{this.title}}</h2>
-        <p>{{this.description}}</p>
-        <p>Price: ${{this.price}}</p>
-        <p>Stock: {{this.stock}}</p>
-        <p>Category: {{this.category}}</p>
-        <br />
-        {{/if}}
+    {{#if this.available}}
+    <h2>{{this.title}}</h2>
+    <p>{{this.description}}</p>
+    <p>Price: ${{this.price}}</p>
+    <p>Stock: {{this.stock}}</p>
+    <p>Category: {{this.category}}</p>
+    <br />
+    {{/if}}
     {{/each}}
 </div>
+
+<script src="/js/products.js"></script>

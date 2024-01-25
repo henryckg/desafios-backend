@@ -1,4 +1,5 @@
 const btns = document.querySelectorAll('.addToCartBtn')
+const logOutBtn = document.querySelector('#logOutBtn')
 
 const addToCart = async (pid) => {
 
@@ -20,4 +21,17 @@ btns.forEach(btn => {
     btn.addEventListener('click', () => {
         addToCart(btn.id)
     })
+})
+
+logOutBtn.addEventListener('click', async (e) => {
+    e.preventDefault()
+    const response = await fetch('http://localhost:8080/api/sessions/logout', {
+        method: 'post',
+        headers: {
+            'Conten-Type': 'application/json'
+        }
+    })
+    const {redirect} = await response.json()
+    console.log(redirect)
+    window.location.href = redirect
 })

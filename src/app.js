@@ -1,5 +1,7 @@
 import express from 'express';
 import handlebars from 'express-handlebars'
+import session from 'express-session';
+import MongoStore from 'connect-mongo';
 import { Server } from 'socket.io'
 import productsRouter from './routes/products.routes.js';
 import cartsRouter from './routes/carts.routes.js';
@@ -7,6 +9,7 @@ import viewRouter from './routes/views.routes.js';
 import mongoose from 'mongoose';
 import { productModel } from './dao/models/products.model.js';
 import { messageModel } from './dao/models/messages.model.js';
+import sessionRouter from './routes/sessions.routes.js';
 
 const PORT = 8080;
 const app = express();
@@ -24,14 +27,24 @@ app.engine('handlebars', hdb.engine);
 app.set('views', 'src/views');
 app.set('view engine', 'handlebars')
 
+app.use(session({
+    secret: 'w@r@S0unD',
+    store: MongoStore.create({
+        mongoUrl: 'mongodb+srv://henryckg:london.08@coder.u9wbflq.mongodb.net/ecommerce'
+    }),
+    resave: true,
+    saveUninitialized: true
+}))
+
 mongoose.connect('mongodb+srv://henryckg:london.08@coder.u9wbflq.mongodb.net/ecommerce')
 
 app.use('/', viewRouter)
 app.use('/api/products', productsRouter)
 app.use('/api/carts', cartsRouter)
+app.use('/api/sessions', sessionRouter)
 
 const httpServer = app.listen(PORT, () => {
-    console.log(`Server running on ${PORT}`)
+    console.log(`Listening on Port: ${PORT}`)
 })
 
 const io = new Server(httpServer);
