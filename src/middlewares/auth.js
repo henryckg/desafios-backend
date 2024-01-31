@@ -11,3 +11,18 @@ export const checkExistingUser = (req, res, next) => {
     }   
     next()
 }
+
+export const checkAdmin = (req, res, next) => {
+    const {email, password} = req.body;
+    if(email === 'adminCoder@coder.com' && password === 'adminCod3r123'){
+            req.session.user = {
+            first_name: 'Admin',
+            last_name: 'Coder',
+            email,
+            role: 'admin'
+            }
+            res.redirect('/products')    
+    } else {
+        next()
+    }
+}

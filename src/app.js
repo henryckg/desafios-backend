@@ -10,6 +10,8 @@ import mongoose from 'mongoose';
 import { productModel } from './dao/models/products.model.js';
 import { messageModel } from './dao/models/messages.model.js';
 import sessionRouter from './routes/sessions.routes.js';
+import initializePassport from './config/passport.config.js';
+import passport from 'passport';
 
 const PORT = 8080;
 const app = express();
@@ -35,6 +37,10 @@ app.use(session({
     resave: true,
     saveUninitialized: true
 }))
+
+initializePassport()
+app.use(passport.initialize())
+app.use(passport.session())
 
 mongoose.connect('mongodb+srv://henryckg:london.08@coder.u9wbflq.mongodb.net/ecommerce')
 

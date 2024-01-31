@@ -47,11 +47,24 @@ viewRouter.get('/carts/:cid', checkAuth, async (req, res) => {
 })
 
 viewRouter.get('/login', checkExistingUser, (req, res) => {
-    res.render('login')
+    res.render('login', {title: 'WaraSound | Login'})
 })
 
 viewRouter.get('/register', checkExistingUser, (req, res) => {
-    res.render('register')
+    res.render('register', {title: 'WaraSound | Register'})
 })
+
+viewRouter.get('/restore-password', checkExistingUser, (req, res) => {
+    res.render('restore-password', {title: 'WaraSound | Restore Password'})
+})
+
+viewRouter.get('/failregister', checkExistingUser, (req, res) => {
+    res.render('failregister', {title: 'WaraSound | Fail Register'})
+})
+
+viewRouter.get('/faillogin', checkExistingUser, (req, res) => {
+    res.render('faillogin', {title: 'WaraSound | Fail Login'})
+})
+
 
 export default viewRouter
