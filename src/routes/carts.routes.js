@@ -11,7 +11,7 @@ cartsRouter.post('/', async (req, res) => {
     if(!cartAdded){
         return res.status(400).send({message: 'Could not create cart'})
     }
-    res.status(201).send({message: 'Cart created'})
+    res.status(201).send({message: 'Cart created', payload: cartAdded})
 })
 
 //Ruta para obtener un carrito por ID

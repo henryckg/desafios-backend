@@ -26,9 +26,17 @@ sessionRouter.post(
             first_name: req.user.first_name,
             last_name: req.user.last_name,
             email: req.user.email,
+            age: req.user.age,
             role: req.user.role
         }
         res.redirect('/products')
+})
+
+sessionRouter.get('/current', (req, res) => {
+    if(!req.session.user){
+        return res.status(401).send({error: 'Unauthorized'})
+    }
+    res.send(req.session.user)
 })
 
 sessionRouter.get('/github', passport.authenticate('github', {scope:['user:email']}), async(req, res) => {})
@@ -37,6 +45,7 @@ sessionRouter.get(
     '/githubcallback', 
     passport.authenticate('github', {failureRedirect: '/login'}), 
     async (req, res) => {
+        req.user.password = ''
         req.session.user = req.user;
         res.redirect('/products')
     }
