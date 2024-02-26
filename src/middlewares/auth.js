@@ -1,3 +1,5 @@
+import dev from "../config/dotenv.config.js"
+
 export const checkAuth = (req, res, next) => {
     if(!req.session?.user){
         return res.redirect('/login')
@@ -14,7 +16,7 @@ export const checkExistingUser = (req, res, next) => {
 
 export const checkAdmin = (req, res, next) => {
     const {email, password} = req.body;
-    if(email === 'adminCoder@coder.com' && password === 'adminCod3r123'){
+    if(email === dev.adminEmail && password === dev.adminPassword){
             req.session.user = {
             first_name: 'Admin',
             last_name: 'Coder',
