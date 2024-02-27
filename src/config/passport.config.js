@@ -3,7 +3,7 @@ import local from 'passport-local'
 import { userModel } from "../dao/models/user.model.js";
 import { createHash, isValidPassword } from "../utils/bcrypt.js";
 import { Strategy as GithubStrategy} from "passport-github2";
-import dev from './dotenv.config.js'
+import config from './dotenv.config.js'
 
 const LocalStrategy = local.Strategy
 
@@ -53,8 +53,8 @@ const initializePassport = () => {
 
     passport.use('github', new GithubStrategy(
         {
-            clientID: dev.githubClientID,
-            clientSecret: dev.githubClientPassword,
+            clientID: config.githubClientID,
+            clientSecret: config.githubClientPassword,
             callbackURL: 'http://localhost:8080/api/sessions/githubcallback',
         },
         async (accessToken, refreshToken, profile, done) => {

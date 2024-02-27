@@ -12,9 +12,9 @@ import { messageModel } from './dao/models/messages.model.js';
 import sessionRouter from './routes/sessions.routes.js';
 import initializePassport from './config/passport.config.js';
 import passport from 'passport';
-import dev from './config/dotenv.config.js';
+import config from './config/dotenv.config.js';
 
-const PORT = dev.PORT;
+const PORT = config.PORT;
 const app = express();
 
 app.use(express.json());
@@ -31,9 +31,9 @@ app.set('views', 'src/views');
 app.set('view engine', 'handlebars')
 
 app.use(session({
-    secret: dev.sessionSecret,
+    secret: config.sessionSecret,
     store: MongoStore.create({
-        mongoUrl: dev.mongoUrl
+        mongoUrl: config.mongoUrl
     }),
     resave: true,
     saveUninitialized: true
@@ -43,7 +43,7 @@ initializePassport()
 app.use(passport.initialize())
 app.use(passport.session())
 
-mongoose.connect(dev.mongoUrl)
+mongoose.connect(config.mongoUrl)
 
 app.use('/', viewRouter)
 app.use('/api/products', productsRouter)
