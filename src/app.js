@@ -31,7 +31,7 @@ app.set('views', 'src/views');
 app.set('view engine', 'handlebars')
 
 app.use(session({
-    secret: config.sessionSecret,
+    secret: config.secretKey,
     store: MongoStore.create({
         mongoUrl: config.mongoUrl
     }),

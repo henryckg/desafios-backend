@@ -1,18 +1,17 @@
 import { Router } from "express";
-import { productModel } from "../dao/models/products.model.js";
-import { cartModel } from "../dao/models/carts.model.js";
 import { checkAuth, checkExistingUser } from "../middlewares/auth.js";
+import ProductsMongo from "../dao/mongo/products.mongo.js"
+import CartsMongo from "../dao/mongo/carts.mongo.js"
 
 const viewRouter = Router()
+const productsService = new ProductsMongo()
+const cartsService = new CartsMongo()
 
 viewRouter.get('/', checkAuth, async (req, res) => {
     const {user} = req.session
-    try {
-        const products = await productModel.find().lean()
-        res.render('home', {user, products, title: 'WaraSound'})
-    } catch (error) {
-        res.render('error', {error: 400, message: "400 Bad Request"})
-    }
+    const result = await productsService.getProducts()
+    const {payload: products} = result
+    res.render('home', {user, products, title: 'WaraSound'})
 })
 
 viewRouter.get('/realtimeproducts', checkAuth, (req, res) => {
@@ -24,16 +23,9 @@ viewRouter.get('/chat', checkAuth, (req, res) =>     {
 })
 
 viewRouter.get('/products', checkAuth, async (req, res) => {
-
     const {user} = req.session
-    const {page = 1, limit = 10, sort = '', query = ''} = req.query
-    const [code, value] = query.split(':')
-    const data = await productModel.paginate({[code]:value}, {
-        limit,
-        page,
-        sort: sort ? {price : sort} : {}
-    })
-    
+    const { page = 1, limit = 10, sort = '', query = ''} = req.query;
+    const data = await productsService.getProducts(limit, sort, page, query)
     if(page <= data.totalPages && page > 0){
         data.validPage = true
     }
@@ -42,7 +34,7 @@ viewRouter.get('/products', checkAuth, async (req, res) => {
 
 viewRouter.get('/carts/:cid', checkAuth, async (req, res) => {
     const {cid} = req.params
-    const cart = await cartModel.findOne({_id: cid}).populate('products.product')
+    const cart = await cartsService.getCart(cid)
     res.render('cart', {cart, title: 'WaraSound | Cart'})
 })
 
@@ -65,6 +57,5 @@ viewRouter.get('/failregister', checkExistingUser, (req, res) => {
 viewRouter.get('/faillogin', checkExistingUser, (req, res) => {
     res.render('faillogin', {title: 'WaraSound | Fail Login'})
 })
-
 
 export default viewRouter

@@ -1,21 +1,25 @@
 import { productModel } from "../models/products.model.js";
 
 export default class ProductsMongo {
-    constructor() { }
 
-    async getProducts(limit, sort, page, code, value) {
-        const products = await productModel.paginate({ [code]: value }, {
-            limit,
-            page,
-            sort: sort ? { price: sort } : {}
-        })
-        products.payload = products.docs
-        delete products.docs
-
-        if (!products) {
-            return false
+    async getProducts(limit = 10, sort = '', page = 1, query = '') {
+        try {
+            const [code, value] = query.split(':')
+            const products = await productModel.paginate({ [code]: value }, {
+                limit,
+                page,
+                sort: sort ? { price: sort } : {}
+            })
+            products.payload = products.docs
+            delete products.docs
+            if (!products) {
+                return false
+            }
+            return (products)
+        } catch (error) {
+            console.log(error)
+            return null
         }
-        return ({ ...products })
     }
 
     async getProductById(id) {
@@ -39,16 +43,16 @@ export default class ProductsMongo {
         }
     }
 
-    async updateProduct(id, values){
+    async updateProduct(id, values) {
         try {
-            const update = await productModel.updateOne({_id: id}, values)
+            const update = await productModel.updateOne({ _id: id }, values)
             return update
         } catch (error) {
             throw error
         }
     }
 
-    async deleteProduct(id){
+    async deleteProduct(id) {
         try {
             const deleted = await productModel.deleteOne({ _id: id })
             return deleted

@@ -3,9 +3,8 @@ import ProductsMongo from "../dao/mongo/products.mongo.js";
 const productsService = new ProductsMongo()
 
 export const getAllProducts = async (req, res) => {
-    const { limit = 10, sort = '', page = 1, query = '' } = req.query; 
-    const [code, value] = query.split(':')
-    const products = await productsService.getProducts(limit, sort, page, code, value)
+    const { limit, sort, page, query } = req.query; 
+    const products = await productsService.getProducts(limit, sort, page, query)
     if(!products){
         return res.status(400).send({status: 'error'})
     }

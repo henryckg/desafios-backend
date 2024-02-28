@@ -6,7 +6,6 @@ const productsService = new ProductsMongo()
 
 export const getCartById = async (req, res) => {
     const { cid } = req.params;
-
     try {
         const cart = await cartsService.getCart(cid)
         if(!cart){

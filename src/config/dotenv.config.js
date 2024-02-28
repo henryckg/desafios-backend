@@ -7,7 +7,7 @@ export default {
     mongoUrl: process.env.MONGO_URL,
     adminEmail: process.env.ADMIN_EMAIL,
     adminPassword: process.env.ADMIN_PASSWORD,
-    sessionSecret: process.env.SESSION_SECRET,
+    secretKey: process.env.SECRET_KEY,
     githubClientID: process.env.GITHUB_CLIENT_ID,
     githubClientPassword: process.env.GITHUB_CLIENT_PASSWORD
 }

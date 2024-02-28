@@ -22,7 +22,7 @@ const userSchema = mongoose.Schema({
     },
     age: Number,
     cart: {
-        type: mongoose.Schema.ObjectId,
+        type: mongoose.SchemaTypes.ObjectId,
         ref: 'carts'
     },
     role: {
