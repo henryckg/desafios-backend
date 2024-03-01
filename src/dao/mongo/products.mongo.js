@@ -2,6 +2,16 @@ import { productModel } from "../models/products.model.js";
 
 export default class ProductsMongo {
 
+    async getAllProducts(){
+        try {
+            const products = await productModel.find().lean()
+            return products
+        } catch (error) {
+            console.log(error)
+            return false
+        }
+    }
+
     async getProducts(limit = 10, sort = '', page = 1, query = '') {
         try {
             const [code, value] = query.split(':')

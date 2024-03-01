@@ -1,10 +1,11 @@
 import { Router } from "express";
-import { userModel } from "../dao/models/user.model.js";
+import UsersMongo from "../dao/mongo/users.mongo.js";
 import passport from "passport";
 import { checkAdmin } from "../middlewares/auth.js";
 import { createHash } from "../utils/bcrypt.js";
 
 const sessionRouter = Router()
+const usersService = new UsersMongo()
 
 sessionRouter.post(
     '/register', 
@@ -67,7 +68,7 @@ sessionRouter.post('/logout', async (req, res) => {
 sessionRouter.post("/restore-password", async (req, res) => {
     const { email, password } = req.body;
     try {
-        const user = await userModel.findOne({ email });
+        const user = await usersService.getUserByEmail({email});
         if (!user) {
             return res.status(401).send({ message: "Unauthorized" });
         }

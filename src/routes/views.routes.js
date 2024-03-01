@@ -9,8 +9,7 @@ const cartsService = new CartsMongo()
 
 viewRouter.get('/', checkAuth, async (req, res) => {
     const {user} = req.session
-    const result = await productsService.getProducts()
-    const {payload: products} = result
+    const products = await productsService.getAllProducts()
     res.render('home', {user, products, title: 'WaraSound'})
 })
 

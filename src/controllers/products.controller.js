@@ -2,7 +2,7 @@ import ProductsMongo from "../dao/mongo/products.mongo.js";
 
 const productsService = new ProductsMongo()
 
-export const getAllProducts = async (req, res) => {
+export const getProducts = async (req, res) => {
     const { limit, sort, page, query } = req.query; 
     const products = await productsService.getProducts(limit, sort, page, query)
     if(!products){
@@ -11,7 +11,7 @@ export const getAllProducts = async (req, res) => {
     res.send({status: 'success', ...products})
 }
 
-export const getProduct = async (req, res) => {
+export const getProductById = async (req, res) => {
     const { pId } = req.params
     try {
         const product = await productsService.getProductById(pId)

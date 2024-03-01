@@ -4,40 +4,31 @@ export default class UsersMongo {
 
     async getUserByEmail(email){
         try{
-            const user = await userModel.findOne({email: email})
-            if(!user){
-                return false
-            }
+            const user = await userModel.findOne({email})
             return user
         } catch(error) {
             console.log(error)
-            return false
+            return null
         }
     }
 
     async getUserById(id){
         try {
             const user = await userModel.findOne({_id: id})
-            if(!user){
-                return false
-            }
             return user
         } catch (error) {
             console.error(error)
-            return false
+            return null
         }
     }
 
     async saveUser(user){
         try {
             const result = await userModel.create(user)
-            if(!result){
-                return false
-            }
             return result
         } catch (error) {
             console.log(error)
-            return false
+            return null
         }
     }
 }

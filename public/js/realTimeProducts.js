@@ -2,7 +2,7 @@ const socket = io()
 
 const productCard = document.querySelector("#productsContainer")
 
-socket.on('getProducts', data => {
+socket.on('server:getProducts', data => {
     let products = ''
     data.forEach(product => {
         if (product.available) {
@@ -47,7 +47,7 @@ availableOptions.forEach(option => {
 addProductForm.addEventListener('submit', (e) => {
     e.preventDefault()
 
-    socket.emit('addProduct', {
+    socket.emit('client:addProduct', {
         title: title.value,
         description: description.value,
         price: price.value,
@@ -76,6 +76,6 @@ deleteProductForm.addEventListener('submit', (e) => {
     //     method:'DELETE'
     // })
 
-    socket.emit('deleteProduct', selectedId.value)
+    socket.emit('client:deleteProduct', selectedId.value)
     selectedId.value = ''
 })
