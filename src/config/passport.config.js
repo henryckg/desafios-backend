@@ -1,11 +1,11 @@
 import passport from "passport";
 import local from 'passport-local'
-import { userModel } from "../dao/models/user.model.js";
 import { createHash, isValidPassword } from "../utils/bcrypt.js";
 import { Strategy as GithubStrategy} from "passport-github2";
-import config from './dotenv.config.js'
+import {getVariables} from './dotenv.config.js'
 import UsersMongo from "../dao/mongo/users.mongo.js";
 
+const {githubClientID, githubClientPassword} = getVariables()
 const LocalStrategy = local.Strategy
 const usersService = new UsersMongo()
 
@@ -55,8 +55,8 @@ const initializePassport = () => {
 
     passport.use('github', new GithubStrategy(
         {
-            clientID: config.githubClientID,
-            clientSecret: config.githubClientPassword,
+            clientID: githubClientID,
+            clientSecret: githubClientPassword,
             callbackURL: 'http://localhost:8080/api/sessions/githubcallback',
         },
         async (accessToken, refreshToken, profile, done) => {

@@ -1,4 +1,6 @@
-import config from "../config/dotenv.config.js"
+import {getVariables} from "../config/dotenv.config.js"
+
+const {adminEmail, adminPassword} = getVariables()
 
 export const checkAuth = (req, res, next) => {
     if(!req.session?.user){
@@ -16,7 +18,7 @@ export const checkExistingUser = (req, res, next) => {
 
 export const checkAdmin = (req, res, next) => {
     const {email, password} = req.body;
-    if(email === config.adminEmail && password === config.adminPassword){
+    if(email === adminEmail && password === adminPassword){
             req.session.user = {
             first_name: 'Admin',
             last_name: 'Coder',
