@@ -4,8 +4,10 @@ import { userModel } from "../dao/models/user.model.js";
 import { createHash, isValidPassword } from "../utils/bcrypt.js";
 import { Strategy as GithubStrategy} from "passport-github2";
 import config from './dotenv.config.js'
+import UsersMongo from "../dao/mongo/users.mongo.js";
 
 const LocalStrategy = local.Strategy
+const usersService = new UsersMongo()
 
 const initializePassport = () => {
     passport.use('register', new LocalStrategy(
@@ -13,12 +15,12 @@ const initializePassport = () => {
         async (req, username, password, done) => {
             const {first_name, last_name, email, age} = req.body;
             try {
-                const user = await userModel.findOne({email: username})
+                const user = await usersService.getUserByEmail(username)
                 if(user){
                     console.log('User already exists')
                     return done(null, false)
                 }
-                const newUser = await userModel.create({
+                const newUser = await usersService.saveUser({
                     first_name,
                     last_name,
                     email,
@@ -36,7 +38,7 @@ const initializePassport = () => {
         {usernameField: 'email'},
         async (username, password, done) => {            
         try {
-                const user = await userModel.findOne({email: username})
+                const user = await usersService.getUserByEmail(username)
                 if(!user){
                     console.log("User doesn't exists")
                     return done(null, false)
@@ -59,7 +61,7 @@ const initializePassport = () => {
         },
         async (accessToken, refreshToken, profile, done) => {
             try {
-                const user = await userModel.findOne({email: profile._json.email})
+                const user = await usersService.getUserByEmail(profile._json.email)
                 if(!user){
                     const newUser = {
                         first_name: profile._json.name.split(' ')[0],
@@ -68,7 +70,7 @@ const initializePassport = () => {
                         password: 'GithubGenerated',
                         role: 'user'
                     }
-                    const result = await userModel.create(newUser)
+                    const result = await usersService.saveUser(newUser)
                     return done(null, result)
                 }
                 return done(null, user)
@@ -83,7 +85,7 @@ const initializePassport = () => {
     })
 
     passport.deserializeUser(async (id, done) => {
-        const user = await userModel.findOne({_id: id})
+        const user = await usersService.getUserById({_id: id})
         done(null, user)
     })
 }
