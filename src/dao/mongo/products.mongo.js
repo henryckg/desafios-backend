@@ -8,7 +8,7 @@ export default class ProductsMongo {
             return products
         } catch (error) {
             console.log(error)
-            return false
+            return null
         }
     }
 
@@ -40,14 +40,15 @@ export default class ProductsMongo {
             }
             return product
         } catch (error) {
-            throw error
+            console.log(error)
+            return null
         }
     }
 
     async createProduct(product) {
         try {
-            await productModel.create(product)
-            return true
+            const result = await productModel.create(product)
+            return result
         } catch (error) {
             throw error
         }
@@ -55,19 +56,29 @@ export default class ProductsMongo {
 
     async updateProduct(id, values) {
         try {
-            const update = await productModel.updateOne({ _id: id }, values)
-            return update
+            const update = await productModel.updateOne({ _id: id }, {$set: values})
+            if (update.matchedCount > 0) {
+                return true
+            } else {
+                return false
+            }
         } catch (error) {
-            throw error
+            console.log(error)
+            return null
         }
     }
 
     async deleteProduct(id) {
         try {
             const deleted = await productModel.deleteOne({ _id: id })
-            return deleted
+            if (deleted.deletedCount > 0) {
+                return true
+            } else {
+                return false
+            }
         } catch (error) {
-            throw error
+            console.log(error)
+            return null
         }
     }
 }

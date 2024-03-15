@@ -1,6 +1,6 @@
 import { messageModel } from "../models/messages.model.js";
 
-export default class MessagesMongo{
+export default class MessagesMongo {
     async getMessages(){
         try {
             const messages = await messageModel.find().lean()

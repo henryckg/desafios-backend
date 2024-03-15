@@ -2,6 +2,19 @@ const socket = io()
 
 const productCard = document.querySelector("#productsContainer")
 
+logOutBtn.addEventListener('click', async (e) => {
+    e.preventDefault()
+    const response = await fetch('http://localhost:8080/api/sessions/logout', {
+        method: 'post',
+        headers: {
+            'Conten-Type': 'application/json'
+        }
+    })
+    const {redirect} = await response.json()
+    console.log(redirect)
+    window.location.href = redirect
+})
+
 socket.on('server:getProducts', data => {
     let products = ''
     data.forEach(product => {

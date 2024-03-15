@@ -10,7 +10,8 @@ export const getVariables = () => {
         adminPassword: process.env.ADMIN_PASSWORD,
         secretKey: process.env.SECRET_KEY,
         githubClientID: process.env.GITHUB_CLIENT_ID,
-        githubClientPassword: process.env.GITHUB_CLIENT_PASSWORD
+        githubClientPassword: process.env.GITHUB_CLIENT_PASSWORD,
+        googlePass: process.env.GOOGLE_PASSWORD
     }
 
 }

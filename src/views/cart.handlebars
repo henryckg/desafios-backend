@@ -1,11 +1,28 @@
+<link rel="stylesheet" href="/css/style.css">
+
 <h1>Cart #{{cart._id}}</h1>
 
+<div id="cartContainer">
 {{#each cart.products}}
-<div>
-    <h3>{{this.product.title}}</h3>
-    <span>Qty:</span>{{this.quantity}}</span>
-    <span>Unit Price: ${{this.product.price}}</span>
-</div>
-<br />
-<br />
+    <div>
+        <h3>{{this.product.title}}</h3>
+        <span>Qty:</span>{{this.quantity}}</span>
+        <span>Unit Price: ${{this.product.price}}</span>
+    </div>
+    <br />
 {{/each}}
+</div>
+
+{{#if cart.products}}
+<form action="/api/carts/65f126542bf9104b9c9197f1/purchase" method="post" id="buyForm">
+    <button>Buy Cart</button>
+</form>
+<br />
+<button type="button" id="emptyCartBtn">Empty Cart</button>
+<br />
+<br />
+{{/if}}
+<button type="button"><a href="http://localhost:8080/products">Go to Products</a></button>
+
+
+<script src="/js/cart.js"></script>

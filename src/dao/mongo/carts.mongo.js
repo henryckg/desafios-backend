@@ -4,32 +4,30 @@ import mongoose from "mongoose"
 export default class CartsMongo {
     constructor(){}
 
-    async getCart(id){
+    async get(id){
         try {
             const cart = await cartModel.findOne({_id: id}).populate('products.product')
-            if(!cart){
-                return false
-            }
             return cart
         } catch (error) {
-            throw error
+            console.log(error)
+            return null
         }
     }
 
     async createCart(){
-        const result = await cartModel.create({})
-        if(!result){
-            return false
+        try {
+            const result = await cartModel.create({})
+            return result
+        } catch (error) {
+            console.log(error)
+            return null
         }
-        return result
     }
 
     async addProduct(cid, pid){
         try {
-            const cart = await this.getCart(cid)
-            if(!cart){
-                return false
-            }
+            const cart = await this.get(cid)
+            if(!cart) return false
             const productInCart = cart.products.find(prod => prod.product.equals(pid))
             if(productInCart){
                 productInCart.quantity++
@@ -39,7 +37,8 @@ export default class CartsMongo {
             await cart.save()
             return true
         } catch (error) {
-            throw error
+            console.log(error)
+            return null
         }
     }
 
@@ -54,7 +53,8 @@ export default class CartsMongo {
                 return false
             }
         } catch (error) {
-            throw error
+            console.log(error)
+            return null
         }
     }
 
@@ -63,13 +63,14 @@ export default class CartsMongo {
             const result = await cartModel.updateOne({_id: cid}, cart)
             return result
         } catch (error) {
-            throw error
+            console.log(error)
+            return null
         }
     }
 
     async updateProductInCart(cid, pid, quantity){
         try {
-            const cart = await this.getCart(cid)
+            const cart = await this.get(cid)
             if(!cart){
                 return false
             }
@@ -81,7 +82,8 @@ export default class CartsMongo {
             await cart.save()
             return true
         } catch (error) {
-            throw error
+            console.log(error)
+            return null
         }
     }
 
@@ -96,7 +98,8 @@ export default class CartsMongo {
                 return false
             }
         } catch (error) {
-            throw error
+            console.log(error)
+            return null
         }
     }
 }

@@ -43,7 +43,7 @@ class CartManager {
     }
 
     async addProductToCart(pid, cid) {
-        const productManager = new ProductManager('src/Products.json')
+        const productManager = new ProductManager('./json/Products.json')
 
         //Llamado a producto y carrito por ID para verificar si existen, de lo contrario, arrojaran error y se interrumpe el método
         const productToAdd = await productManager.getProductById(+pid)

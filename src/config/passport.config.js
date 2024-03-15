@@ -3,11 +3,10 @@ import local from 'passport-local'
 import { createHash, isValidPassword } from "../utils/bcrypt.js";
 import { Strategy as GithubStrategy} from "passport-github2";
 import {getVariables} from './dotenv.config.js'
-import UsersMongo from "../dao/mongo/users.mongo.js";
+import {usersService} from "../repositories/index.js"
 
 const {githubClientID, githubClientPassword} = getVariables()
 const LocalStrategy = local.Strategy
-const usersService = new UsersMongo()
 
 const initializePassport = () => {
     passport.use('register', new LocalStrategy(
