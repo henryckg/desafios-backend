@@ -12,7 +12,8 @@ import viewRouter from './routes/views.routes.js';
 import Sockets from './sockets.js';
 import initializePassport from './config/passport.config.js';
 import {getVariables} from './config/dotenv.config.js';
-import { generateProducts } from './utils/faker.js';
+import { generateProductsController } from './controllers/mocking.controller.js';
+import { ErrorHandler } from './middlewares/ErrorHandler.js';
 
 const {PORT, mongoUrl, secretKey} = getVariables()
 const app = express();
@@ -49,7 +50,8 @@ app.use('/', viewRouter)
 app.use('/api/products', productsRouter)    
 app.use('/api/carts', cartsRouter)
 app.use('/api/sessions', sessionRouter)
-app.use('/mockingproducts', generateProducts)
+app.use('/mockingproducts', generateProductsController)
+app.use(ErrorHandler)
 
 const httpServer = app.listen(PORT, () => {
     console.log(`Listening on Port: ${PORT}`)

@@ -1,5 +1,9 @@
 import { productsService } from "../repositories/index.js";
 import ProductDTO from "../dtos/product.dto.js";
+import CustomErrors from "../services/errors/CustomError.js";
+import { createProductErrorInfo } from "../services/errors/info.js";
+import ErrorEnum from "../services/errors/error.enum.js";
+
 
 export const getProducts = async (req, res) => {
     const { limit, sort, page, query } = req.query; 
@@ -19,27 +23,27 @@ export const getProductById = async (req, res) => {
     res.send(product)
 }
 
-export const postProduct = async (req, res) => {
-    const newProduct = new ProductDTO(req.body);
-    ///// Multer será integrado más tarde /////
-    // const files = req.files
-    // let paths = []
+export const postProduct = async (req, res, next) => {
+    try {
+        const products = await productsService.getAllProducts()
+        const {title, price, description, code, stock, category} = req.body;
+        if(
+            (!title || !price || !description || !code || !stock || !category) || 
+            products.find(p => p.code === code)
+        ){
+            CustomErrors.createError({
+                name: 'Product creation fails',
+                cause: createProductErrorInfo(req.body),
+                message: 'Error tryng to create user',
+                code: ErrorEnum.INVALID_TYPE_ERROR 
+            })
+        }
 
-    // files.forEach((file) => {    
-    //     paths.push(file.path.split('public').join(''))
-    // })
-    try {  
+        const newProduct = new ProductDTO(req.body);
         const result = await productsService.createProduct(newProduct)
         if(result) res.status(201).json({message: 'Product created'})
     } catch (error) {
-        console.error({error})
-        if(error.code === 11000){
-            return res.status(400).json({message: 'Code already exists'})
-        }
-        if(error.errors){
-            return res.status(400).json({message: error.message})
-        }
-        res.status(400).json({error})
+        next(error)
     }
 }
 

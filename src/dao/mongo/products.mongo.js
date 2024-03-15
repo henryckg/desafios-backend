@@ -50,7 +50,7 @@ export default class ProductsMongo {
             const result = await productModel.create(product)
             return result
         } catch (error) {
-            throw error
+            return null
         }
     }
 
