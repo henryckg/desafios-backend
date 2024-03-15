@@ -9,7 +9,6 @@ export default class CartsMongo {
             const cart = await cartModel.findOne({_id: id}).populate('products.product')
             return cart
         } catch (error) {
-            console.log(error)
             return null
         }
     }
@@ -37,8 +36,7 @@ export default class CartsMongo {
             await cart.save()
             return true
         } catch (error) {
-            console.log(error)
-            return null
+                return null
         }
     }
 

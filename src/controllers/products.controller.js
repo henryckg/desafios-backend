@@ -1,26 +1,44 @@
 import { productsService } from "../repositories/index.js";
 import ProductDTO from "../dtos/product.dto.js";
 import CustomErrors from "../services/errors/CustomError.js";
-import { createProductErrorInfo } from "../services/errors/info.js";
+import { createProductErrorInfo, getProductsErrorInfo, getSingleProductErrorInfo } from "../services/errors/info.js";
 import ErrorEnum from "../services/errors/error.enum.js";
 
 
-export const getProducts = async (req, res) => {
-    const { limit, sort, page, query } = req.query; 
-    const products = await productsService.getProducts(limit, sort, page, query)
-    if(!products){
-        return res.status(400).send({status: 'error'})
+export const getProducts = async (req, res, next) => {
+    try {
+        const { limit, sort, page, query } = req.query;
+        const products = await productsService.getProducts(limit, sort, page, query)
+        if(!products){
+            CustomErrors.createError({
+                name: "Cannot get products",
+                cause: getProductsErrorInfo(),
+                message: "Error trying to get products",
+                code: ErrorEnum.DATABASE_ERROR
+            })
+        }
+        res.send({status: 'success', ...products})
+    } catch (error) {
+        next(error)
     }
-    res.send({status: 'success', ...products})
 }
 
-export const getProductById = async (req, res) => {
-    const { pId } = req.params
-    const product = await productsService.getProductById(pId)
-    if(!product){
-        return res.status(404).send({status: 'error', message: 'Product not found'})
+export const getProductById = async (req, res, next) => {
+    try {
+        const { pId } = req.params
+        const product = await productsService.getProductById(pId)
+        if(!product){
+            CustomErrors.createError({
+                name: "Product not found",
+                cause: getSingleProductErrorInfo(pId),
+                message: "Error trying to find product",
+                code: ErrorEnum.INVALID_ID_ERROR
+            })
+        }
+        res.send(product)
+    } catch (error) {
+        next(error)
     }
-    res.send(product)
 }
 
 export const postProduct = async (req, res, next) => {

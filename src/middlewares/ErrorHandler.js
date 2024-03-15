@@ -5,9 +5,9 @@ export const ErrorHandler = (error, req, res, next) => {
     switch (error.code) {
         case ErrorEnum.INVALID_TYPE_ERROR:
             return res.status(400).send({ error: error.name });
-        case ErrorEnum.INVALID_PARAM:
+        case ErrorEnum.DATABASE_ERROR:
             return res.status(400).send({ error: error.name });
-        case ErrorEnum.USER_NOT_FOUND:
+        case ErrorEnum.INVALID_ID_ERROR:
             return res.status(404).send({ error: error.name });
         default:
             return res.status(400).send({ error: "Unhandled error" });

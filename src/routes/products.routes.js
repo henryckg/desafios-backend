@@ -9,7 +9,7 @@ productsRouter.get('/', getProducts)
 //Obtener un producto por ID
 productsRouter.get('/:pId', getProductById)
 //Ruta para crear productos
-productsRouter.post('/',postProduct)
+productsRouter.post('/', postProduct)
 //Ruta para actualizar un producto por ID
 productsRouter.put('/:pId', handlePolicies(['ADMIN']), putProduct)
 //Ruta para eliminar un producto por ID

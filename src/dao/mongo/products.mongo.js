@@ -27,7 +27,6 @@ export default class ProductsMongo {
             }
             return (products)
         } catch (error) {
-            console.log(error)
             return null
         }
     }
@@ -40,7 +39,6 @@ export default class ProductsMongo {
             }
             return product
         } catch (error) {
-            console.log(error)
             return null
         }
     }
