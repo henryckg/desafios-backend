@@ -14,6 +14,8 @@ import initializePassport from './config/passport.config.js';
 import {getVariables} from './config/dotenv.config.js';
 import { generateProductsController } from './controllers/mocking.controller.js';
 import { ErrorHandler } from './middlewares/ErrorHandler.js';
+import { addLogger } from './utils/logger.js';
+import { loggerTester } from './controllers/logger.controller.js';
 
 const {PORT, mongoUrl, secretKey} = getVariables()
 const app = express();
@@ -46,11 +48,13 @@ app.use(passport.session())
 
 mongoose.connect(mongoUrl)
 
+app.use(addLogger)
 app.use('/', viewRouter)
 app.use('/api/products', productsRouter)    
 app.use('/api/carts', cartsRouter)
 app.use('/api/sessions', sessionRouter)
-app.use('/mockingproducts', generateProductsController)
+app.get('/mockingproducts', generateProductsController)
+app.get('/loggerTest', loggerTester)
 app.use(ErrorHandler)
 
 const httpServer = app.listen(PORT, () => {
