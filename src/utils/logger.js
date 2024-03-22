@@ -1,4 +1,8 @@
 import winston from 'winston'
+import { getVariables } from '../config/dotenv.config.js'
+import processOptions from './process.js'
+
+const {NODE_ENV} = getVariables(processOptions)
 
 const customLevelOptions = {
     levels: {
@@ -51,7 +55,7 @@ const prodLogger = winston.createLogger({
 })
 
 export const addLogger = (req, res, next) => {
-    switch (process.env.NODE_ENV) {
+    switch (NODE_ENV) {
         case 'development':
             req.logger = devLogger
             break;

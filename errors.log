@@ -18,3 +18,23 @@ fatal: This is Fatal
 error: This is Error
 fatal: This is Fatal
 error: This is Error
+error: Error trying to find product
+    Product not found or value is not valid. 
+    Input must be a mongo ObjectId (24 character hex string) and received 659f6fc7f3a665285 (string)
+    
+error: 
+    Product not found or value is not valid. 
+    Input must be a mongo ObjectId (24 character hex string) and received 659f6fc7f3a665285 (string)
+    
+error: 
+    Product not found or value is not valid. 
+    Input must be a mongo ObjectId (24 character hex string) and received 659f6fc7f3a665285 (string)
+    
+error: 
+    Product not found or value is not valid. 
+    Input must be a mongo ObjectId (24 character hex string) and received 659f6fc7f3a665285 (string)
+    
+error: 
+    Product not found or value is not valid. 
+    Input must be a mongo ObjectId (24 character hex string) and received 659f6fc7f3a665285 (string)
+    

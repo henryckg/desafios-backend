@@ -5,19 +5,21 @@ import mongoose from 'mongoose';
 import passport from 'passport';
 import MongoStore from 'connect-mongo';
 import { Server } from 'socket.io'
+import Sockets from './sockets.js';
+import processOptions from './utils/process.js';
+import { addLogger } from './utils/logger.js';
+import {getVariables} from './config/dotenv.config.js';
+import initializePassport from './config/passport.config.js';
+import { ErrorHandler } from './middlewares/ErrorHandler.js';
 import productsRouter from './routes/products.routes.js';
 import sessionRouter from './routes/sessions.routes.js';
 import cartsRouter from './routes/carts.routes.js';
 import viewRouter from './routes/views.routes.js';
-import Sockets from './sockets.js';
-import initializePassport from './config/passport.config.js';
-import {getVariables} from './config/dotenv.config.js';
 import { generateProductsController } from './controllers/mocking.controller.js';
-import { ErrorHandler } from './middlewares/ErrorHandler.js';
-import { addLogger } from './utils/logger.js';
 import { loggerTester } from './controllers/logger.controller.js';
 
-const {PORT, mongoUrl, secretKey} = getVariables()
+const {PORT, mongoUrl, secretKey} = getVariables(processOptions)
+
 const app = express();
 
 app.use(express.json());

@@ -1,7 +1,8 @@
 import nodemailer from 'nodemailer'
 import {getVariables} from '../config/dotenv.config.js';
+import processOptions from './process.js';
 
-const {googlePass} = getVariables()
+const {googlePass} = getVariables(processOptions)
 
 export const sendMail = async (email, ticket) => {
     const transport = nodemailer.createTransport({

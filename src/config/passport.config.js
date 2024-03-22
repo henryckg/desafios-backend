@@ -4,8 +4,9 @@ import { createHash, isValidPassword } from "../utils/bcrypt.js";
 import { Strategy as GithubStrategy} from "passport-github2";
 import {getVariables} from './dotenv.config.js'
 import {usersService} from "../repositories/index.js"
+import processOptions from "../utils/process.js";
 
-const {githubClientID, githubClientPassword} = getVariables()
+const {githubClientID, githubClientPassword} = getVariables(processOptions)
 const LocalStrategy = local.Strategy
 
 const initializePassport = () => {

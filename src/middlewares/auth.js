@@ -1,6 +1,7 @@
 import {getVariables} from "../config/dotenv.config.js"
+import processOptions from "../utils/process.js"
 
-const {adminEmail, adminPassword} = getVariables()
+const {adminEmail, adminPassword} = getVariables(processOptions)
 
 export const checkAuth = (req, res, next) => {
     if(!req.session?.user){
