@@ -38,6 +38,7 @@ export const logoutController = async (req, res) => {
     try {
         req.session.destroy((err) => {
             if(err){
+                req.logger.warn(err)
                 return res.status(500).send({message: 'Logout Failed'})
             }
             res.send({redirect: 'http://localhost:8080/login'})
@@ -58,7 +59,7 @@ export const restorePassword = async (req, res) => {
         await user.save();
         res.send({ message: "Password updated" });
     } catch (error) {
-        console.error(error);
+        req.logger.warn(error);
         res.status(400).send({ error });
     }
 }

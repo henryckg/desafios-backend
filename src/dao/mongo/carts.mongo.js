@@ -18,7 +18,6 @@ export default class CartsMongo {
             const result = await cartModel.create({})
             return result
         } catch (error) {
-            console.log(error)
             return null
         }
     }
@@ -36,7 +35,7 @@ export default class CartsMongo {
             await cart.save()
             return true
         } catch (error) {
-                return null
+            return null
         }
     }
 
@@ -51,7 +50,6 @@ export default class CartsMongo {
                 return false
             }
         } catch (error) {
-            console.log(error)
             return null
         }
     }
@@ -61,7 +59,6 @@ export default class CartsMongo {
             const result = await cartModel.updateOne({_id: cid}, cart)
             return result
         } catch (error) {
-            console.log(error)
             return null
         }
     }

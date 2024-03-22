@@ -12,7 +12,8 @@ export const ErrorHandler = (error, req, res, next) => {
             req.logger.error(error.cause)
             return res.status(404).send({ error: error.name });
         case ErrorEnum.ROUTING_ERROR:
-                return res.status(404).send({ error: error.name });
+            req.logger.fatal(error.cause)
+            return res.status(404).send({ error: error.name });
         default:
             console.log('Error: ' + error.message)
             return res.status(400).send({ error: "Unhandled error" });

@@ -17,7 +17,7 @@ const initializePassport = () => {
             try {
                 const user = await usersService.getUserByEmail(username)
                 if(user){
-                    console.log('User already exists')
+                    req.logger.error('User already exists')
                     return done(null, false)
                 }
                 const newUser = await usersService.saveUser({
@@ -40,7 +40,6 @@ const initializePassport = () => {
         try {
                 const user = await usersService.getUserByEmail(username)
                 if(!user){
-                    console.log("User doesn't exists")
                     return done(null, false)
                 }
                 if(!isValidPassword(user, password)){
